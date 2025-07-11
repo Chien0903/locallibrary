@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import get_object_or_404
 from .models import Book, Author, BookInstance, Genre
-from .constants import LOAN_STATUS, NUM_BOOK_VIEW
+from .constant import LOAN_STATUS, NUM_BOOK_VIEW
 # Create your views here.
 from catalog.models import Book, Author, Genre, BookInstance
 
