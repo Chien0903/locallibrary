@@ -9,6 +9,7 @@ from .constant import (
     MAX_LENGTH_ISBN,
     MAX_LENGTH_IMPRINT,
     MAX_LENGTH_STATUS,
+    MAX_DISPLAY_GENRE,
 )
 import uuid 
 
@@ -31,6 +32,9 @@ class Book(models.Model):
         return self.title
     def get_absolute_url(self):
         return reverse('book-detail', args=[str(self.id)])
+    def display_genre(self):
+        return ', '.join([genre.name for genre in self.genre.all()[:MAX_DISPLAY_GENRE]])
+    display_genre.short_description = 'Genre'
 
 class BookInstance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, 
