@@ -25,3 +25,4 @@ def index(request):
     
     #render the HTML template index.html with the data in the context variable
     return render(request, 'index.html', context=context)
+
