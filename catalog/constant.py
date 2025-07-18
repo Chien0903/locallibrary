@@ -7,6 +7,7 @@ MAX_LENGTH_ISBN = 13
 MAX_LENGTH_IMPRINT = 200
 MAX_LENGTH_STATUS = 1
 MAX_DISPLAY_GENRE = 3
+NUM_BOOK_VIEW = 10  # Số lượng sách hiển thị trên mỗi trang
 
 class LOAN_STATUS(Enum):
     MAINTENANCE = 'm'
