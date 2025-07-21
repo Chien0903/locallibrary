@@ -9,10 +9,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-      integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAY5uIKz4rEkgIXeMed4M0j1fIDpvg6uqKI2xXr2"
-      crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
@@ -25,8 +22,23 @@
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
           <li><a href="{% url 'books' %}">{% trans "All books" %}</a></li>
-          <li><a href="%">{% trans "All authors" %}</a></li>
+          <li><a href="#">{% trans "All authors" %}</a></li>
         </ul>
+
+        {% if user.is_authenticated %}
+        <li>{% trans "User:" %} {{ user.get_username }}</li>
+        <li><a href="{% url 'my-borrowed' %}">{% trans "My Borrowed" %}</a></li>
+        <li>
+          <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link" style="padding: 0; border: none; background: none; color: #007bff; text-decoration: underline; cursor: pointer;">
+              {% trans "Logout" %}
+            </button>
+          </form>
+        </li>
+        {% else %}
+        <li><a href="{% url 'login' %}?next={{request.path}}">{% trans "Login" %}</a></li>
+        {% endif %}
         {% endblock %}
       </div>
 
@@ -43,9 +55,7 @@
                   {% endif %}
 
                   <span class="page-current">
-                    {% blocktrans with page=page_obj.number num_pages=page_obj.paginator.num_pages %}
-                      Page {{ page }} of {{ num_pages }}.
-                    {% endblocktrans %}
+                    {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}.
                   </span>
 
                   {% if page_obj.has_next %}
@@ -62,3 +72,4 @@
     </div>
   </body>
 </html>
+
