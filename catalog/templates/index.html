@@ -1,4 +1,5 @@
 {% extends "base_generic.html" %}
+{% load i18n %} 
 
 {% block content %}
   <h1>Local Library Home</h1>
@@ -10,5 +11,6 @@
     <li><strong>Copies:</strong> {{ num_instances }}</li>
     <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
     <li><strong>Authors:</strong> {{ num_authors }}</li>
+    <p>You have visited this page {{ num_visits }} time{% if num_visits > 1 %}s{% endif %}.</p>
   </ul>
 {% endblock %}
