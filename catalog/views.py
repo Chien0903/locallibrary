@@ -2,6 +2,7 @@ from urllib import request
 from django.shortcuts import render
 from django.views import generic
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Book, Author, BookInstance, Genre
 from .constant import LOAN_STATUS, NUM_BOOK_VIEW
 # Create your views here.
@@ -60,5 +61,14 @@ class BookDetailView(generic.DetailView):
         book = get_object_or_404(Book, pk=primary_key)
 
         return render(request, "catalog/book_detail.html", context={"book": book})
+
+
+class LoanedBooksByUserListView(LoginRequiredMixin, generic.ListView):
+    """Generic class-based view listing books on loan to current user."""
+    model = BookInstance
+    template_name = 'catalog/bookinstance_list_borrowed_user.html'
+    paginate_by = 10
     
+    def get_queryset(self):
+        return BookInstance.objects.filter(borrower=self.request.user).filter(status__exact='o').order_by('due_back')
     

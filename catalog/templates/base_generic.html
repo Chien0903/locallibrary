@@ -8,9 +8,8 @@
     {% endblock %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    
     <link rel="stylesheet"
-
       href="{% static 'css/bootstrap.min.css' %}">
 
     {% load static %}
@@ -24,8 +23,23 @@
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">{% trans "Home" %}</a></li>
           <li><a href="{% url 'books' %}">{% trans "All books" %}</a></li>
-          <li><a href="%">{% trans "All authors" %}</a></li>
+          <li><a href="#">{% trans "All authors" %}</a></li>
         </ul>
+
+        {% if user.is_authenticated %}
+        <li>{% trans "User:" %} {{ user.get_username }}</li>
+        <li><a href="{% url 'my-borrowed' %}">{% trans "My Borrowed" %}</a></li>
+        <li>
+          <form action="{% url 'logout' %}" method="post" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-link" style="padding: 0; border: none; background: none; color: #007bff; text-decoration: underline; cursor: pointer;">
+              {% trans "Logout" %}
+            </button>
+          </form>
+        </li>
+        {% else %}
+        <li><a href="{% url 'login' %}?next={{request.path}}">{% trans "Login" %}</a></li>
+        {% endif %}
         {% endblock %}
       </div>
 
@@ -42,9 +56,7 @@
                   {% endif %}
 
                   <span class="page-current">
-                    {% blocktrans with page=page_obj.number num_pages=page_obj.paginator.num_pages %}
-                      Page {{ page }} of {{ num_pages }}.
-                    {% endblocktrans %}
+                    {% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}.
                   </span>
 
                   {% if page_obj.has_next %}
@@ -61,3 +73,4 @@
     </div>
   </body>
 </html>
+
